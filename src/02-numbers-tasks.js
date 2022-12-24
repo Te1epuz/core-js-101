@@ -7,7 +7,6 @@
  *                                                                                           *
  ******************************************************************************************* */
 
-
 /**
  * Returns an area of a rectangle given by width and height.
  *
@@ -22,7 +21,6 @@
 function getRectangleArea(width, height) {
   return width * height;
 }
-
 
 /**
  * Returns a circumference of circle given by radius.
@@ -90,7 +88,6 @@ function getLinearEquationRoot(a, b) {
   return (0 - b) / a;
 }
 
-
 /**
  * Returns an angle (in radians) between two vectors given by xi and yi,
  * coordinates in Cartesian plane.
@@ -109,8 +106,11 @@ function getLinearEquationRoot(a, b) {
  *   (0,1) (0,1)     => 0
  *   (0,1) (1,2)     => 0
  */
-function getAngleBetweenVectors(/* x1, y1, x2, y2 */) {
-  throw new Error('Not implemented');
+function getAngleBetweenVectors(x1, y1, x2, y2) {
+  return Math.acos(
+    (x1 * x2 + y1 * y2)
+     / (Math.sqrt(x1 ** 2 + y1 ** 2) * Math.sqrt(x2 ** 2 + y2 ** 2)),
+  );
 }
 
 /**
@@ -128,7 +128,6 @@ function getAngleBetweenVectors(/* x1, y1, x2, y2 */) {
 function getLastDigit(value) {
   return value.toString().slice(-1);
 }
-
 
 /**
  * Returns a number by given string representation.
@@ -162,7 +161,6 @@ function getParallelepipedDiagonal(a, b, c) {
   return Math.sqrt(a ** 2 + b ** 2 + c ** 2);
 }
 
-
 /**
  * Returns the number rounded to specified power of 10.
  *
@@ -181,7 +179,7 @@ function getParallelepipedDiagonal(a, b, c) {
  *   1678, 3  => 2000
  */
 function roundToPowerOfTen(num, pow) {
-  return Math.round(num / (10 ** pow)) * (10 ** pow);
+  return Math.round(num / 10 ** pow) * 10 ** pow;
 }
 
 /**
