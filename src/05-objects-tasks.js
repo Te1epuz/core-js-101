@@ -117,32 +117,59 @@ function fromJSON(proto, json) {
  */
 
 const cssSelectorBuilder = {
-  element(/* value */) {
-    throw new Error('Not implemented');
+  selector: '',
+  orderNum: 0,
+
+  checkErrors(checkOrder) {
+    if (checkOrder === this.orderNum
+      && (checkOrder === 1 || checkOrder === 2 || checkOrder === 6)) {
+      throw new Error(
+        'Element, id and pseudo-element should not occur more then one time inside the selector',
+      );
+    }
+    if (this.orderNum > checkOrder) {
+      throw new Error(
+        'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
+      );
+    }
   },
 
-  id(/* value */) {
-    throw new Error('Not implemented');
+  element(value) {
+    this.checkErrors(1);
+    return { ...this, selector: value, orderNum: 1 };
   },
 
-  class(/* value */) {
-    throw new Error('Not implemented');
+  id(value) {
+    this.checkErrors(2);
+    return { ...this, selector: `${this.selector}#${value}`, orderNum: 2 };
   },
 
-  attr(/* value */) {
-    throw new Error('Not implemented');
+  class(value) {
+    this.checkErrors(3);
+    return { ...this, selector: `${this.selector}.${value}`, orderNum: 3 };
   },
 
-  pseudoClass(/* value */) {
-    throw new Error('Not implemented');
+  attr(value) {
+    this.checkErrors(4);
+    return { ...this, selector: `${this.selector}[${value}]`, orderNum: 4 };
   },
 
-  pseudoElement(/* value */) {
-    throw new Error('Not implemented');
+  pseudoClass(value) {
+    this.checkErrors(5);
+    return { ...this, selector: `${this.selector}:${value}`, orderNum: 5 };
   },
 
-  combine(/* selector1, combinator, selector2 */) {
-    throw new Error('Not implemented');
+  pseudoElement(value) {
+    this.checkErrors(6);
+    return { ...this, selector: `${this.selector}::${value}`, orderNum: 6 };
+  },
+
+  combine(selector1, combinator, selector2) {
+    return { ...this, selector: `${selector1.selector} ${combinator} ${selector2.selector}` };
+  },
+
+  stringify() {
+    return this.selector;
   },
 };
 
